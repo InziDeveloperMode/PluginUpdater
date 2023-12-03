@@ -14,7 +14,8 @@ namespace AutoUpdatePlugin
     {
         public static Main Instance;
         public override string Name => "PluginUpdater";
-        public override string Author => "semplicementeinzi"; 
+        public override string Author => "semplicementeinzi";
+        public override Version RequiredExiledVersion => new(8, 4, 3);
         public override Version Version => new Version(1, 0, 0);
 
         public override PluginPriority Priority => PluginPriority.Lowest;
