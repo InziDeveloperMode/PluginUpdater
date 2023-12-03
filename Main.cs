@@ -7,6 +7,7 @@ using Config = PluginUpdater.Config;
 using EventsHandler = PluginUpdater.EventsHandler;
 using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
+using static System.Net.WebRequestMethods;
 
 namespace AutoUpdatePlugin
 {
@@ -16,7 +17,7 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
 
         public override PluginPriority Priority => PluginPriority.Lowest;
 
@@ -28,7 +29,7 @@ namespace AutoUpdatePlugin
 
         public readonly PluginInfo[] pluginsToUpdate =
         {
-            new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/SpGerg/DotaHeroes" },
+            new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" },
             new PluginInfo { Name = "DotaHeroes", GitHubRepoUrl = "https://github.com/SpGerg/DotaHeroes" },
             new PluginInfo { Name = "DiscordIntegration", GitHubRepoUrl = "https://github.com/Exiled-Team/DiscordIntegration" },
             new PluginInfo { Name = "CustomItems", GitHubRepoUrl = "https://github.com/Exiled-Team/CustomItems" },
