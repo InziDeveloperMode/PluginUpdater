@@ -46,7 +46,7 @@ namespace PluginUpdater
                             }
                             else
                             {
-                                if (pluginInfo.Name == "PluginUpdater")
+                               /* if (pluginInfo.Name == "PluginUpdater")
                                 {
                                     Timing.CallDelayed(6f, () => {
                                         Log.Warn($"Checking the plugin {pluginInfo.Name}....");
@@ -56,10 +56,10 @@ namespace PluginUpdater
 
                                 }
                                 else
-                                {
+                                {*/
                                     Log.Warn($"Checking the plugin {pluginInfo.Name}....");
                                     UpdatePlugin(pluginInfo);
-                                }
+                                //}
                             }
 
                             

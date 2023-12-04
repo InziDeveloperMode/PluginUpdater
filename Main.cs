@@ -18,7 +18,7 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 1, 1);
+        public override Version Version => new Version(1, 1, 2);
 
         public override PluginPriority Priority => PluginPriority.Higher;
 
@@ -31,7 +31,7 @@ namespace AutoUpdatePlugin
 
         public readonly PluginInfo[] pluginsToUpdate =
         {
-            new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" }, 
+            //new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" }, ----> Fuck you
             new PluginInfo { Name = "DotaHeroes", GitHubRepoUrl = "https://github.com/SpGerg/DotaHeroes" },
             new PluginInfo { Name = "DiscordIntegration", GitHubRepoUrl = "https://github.com/Exiled-Team/DiscordIntegration" },
             new PluginInfo { Name = "CustomItems", GitHubRepoUrl = "https://github.com/Exiled-Team/CustomItems" },
