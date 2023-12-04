@@ -38,20 +38,31 @@ namespace PluginUpdater
                         // Check if the update is available
                         if (IsUpdateAvailable(pluginInfo))
                         {
-                            if (pluginInfo.Name == "PluginUpdater")
-                            {
-                                Timing.CallDelayed(6f, () => {
-                                    Log.Warn($"Checking the plugin {pluginInfo.Name}....");
-                                    UpdatePlugin(pluginInfo);
-                                    }
-                                );
 
+                            if (Main.BlacklistedPluginNames.Contains(pluginInfo.Name, StringComparer.OrdinalIgnoreCase))
+                            {
+                                Log.Warn($"{pluginInfo.Name} It cannot be updated because it is blacklisted!");
+                                return;
                             }
                             else
                             {
-                                Log.Warn($"Checking the plugin {pluginInfo.Name}....");
-                                UpdatePlugin(pluginInfo);
+                                if (pluginInfo.Name == "PluginUpdater")
+                                {
+                                    Timing.CallDelayed(6f, () => {
+                                        Log.Warn($"Checking the plugin {pluginInfo.Name}....");
+                                        UpdatePlugin(pluginInfo);
+                                    }
+                                    );
+
+                                }
+                                else
+                                {
+                                    Log.Warn($"Checking the plugin {pluginInfo.Name}....");
+                                    UpdatePlugin(pluginInfo);
+                                }
                             }
+
+                            
                             
                             
                           

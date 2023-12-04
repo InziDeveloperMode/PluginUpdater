@@ -8,6 +8,7 @@ using EventsHandler = PluginUpdater.EventsHandler;
 using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
 using static System.Net.WebRequestMethods;
+using System.Collections.Generic;
 
 namespace AutoUpdatePlugin
 {
@@ -17,7 +18,7 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 1, 0);
+        public override Version Version => new Version(1, 1, 1);
 
         public override PluginPriority Priority => PluginPriority.Higher;
 
@@ -30,7 +31,7 @@ namespace AutoUpdatePlugin
 
         public readonly PluginInfo[] pluginsToUpdate =
         {
-            // new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" }, -----> Fuck you
+            new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" }, 
             new PluginInfo { Name = "DotaHeroes", GitHubRepoUrl = "https://github.com/SpGerg/DotaHeroes" },
             new PluginInfo { Name = "DiscordIntegration", GitHubRepoUrl = "https://github.com/Exiled-Team/DiscordIntegration" },
             new PluginInfo { Name = "CustomItems", GitHubRepoUrl = "https://github.com/Exiled-Team/CustomItems" },
@@ -45,8 +46,14 @@ namespace AutoUpdatePlugin
             new PluginInfo { Name = "ShootingInteractions", GitHubRepoUrl = "https://github.com/SiphoxR/ShootingInteractions" },
             new PluginInfo { Name = "UIURescueSquad", GitHubRepoUrl = "https://github.com/NikkiGardiner1/UIURescueSquad"},
             new PluginInfo { Name = "ScriptedEvents", GitHubRepoUrl = "https://github.com/Thundermaker300/ScriptedEvents"},
-            new PluginInfo { Name = "CedModV3", GitHubRepoUrl = "https://github.com/CedModV2/CedMod"},
+            
         };
+
+        public static List<string> BlacklistedPluginNames = new List<string>
+        {
+        "CedModV3",
+        };
+
 
         public override void OnEnabled()
         {
