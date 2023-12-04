@@ -17,9 +17,9 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 0, 1);
+        public override Version Version => new Version(1, 1, 0);
 
-        public override PluginPriority Priority => PluginPriority.Lowest;
+        public override PluginPriority Priority => PluginPriority.Higher;
 
         public class PluginInfo
         {
@@ -27,9 +27,10 @@ namespace AutoUpdatePlugin
             public string GitHubRepoUrl { get; set; }
         }
 
+
         public readonly PluginInfo[] pluginsToUpdate =
         {
-            new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" },
+            // new PluginInfo { Name = "PluginUpdater", GitHubRepoUrl = "https://github.com/InziDeveloperMode/PluginUpdater" }, -----> Fuck you
             new PluginInfo { Name = "DotaHeroes", GitHubRepoUrl = "https://github.com/SpGerg/DotaHeroes" },
             new PluginInfo { Name = "DiscordIntegration", GitHubRepoUrl = "https://github.com/Exiled-Team/DiscordIntegration" },
             new PluginInfo { Name = "CustomItems", GitHubRepoUrl = "https://github.com/Exiled-Team/CustomItems" },
@@ -43,25 +44,27 @@ namespace AutoUpdatePlugin
             new PluginInfo { Name = "AutoBroadcast", GitHubRepoUrl = "https://github.com/Misfiy/AutoBroadcast" },
             new PluginInfo { Name = "ShootingInteractions", GitHubRepoUrl = "https://github.com/SiphoxR/ShootingInteractions" },
             new PluginInfo { Name = "UIURescueSquad", GitHubRepoUrl = "https://github.com/NikkiGardiner1/UIURescueSquad"},
+            new PluginInfo { Name = "ScriptedEvents", GitHubRepoUrl = "https://github.com/Thundermaker300/ScriptedEvents"},
+            new PluginInfo { Name = "CedModV3", GitHubRepoUrl = "https://github.com/CedModV2/CedMod"},
         };
 
         public override void OnEnabled()
         {
             Instance = this;
+            EventsHandler.CreateCustomPluginListFile();
             EventsHandler.UpdatePlugins();
             base.OnEnabled();
 
-            
+
         }
         public override void OnDisabled()
         {
             Instance = null;
             base.OnEnabled();
 
-            
+
         }
 
 
     }
 }
-
