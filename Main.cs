@@ -42,6 +42,7 @@ namespace AutoUpdatePlugin
             new PluginInfo { Name = "BetterRestartingSystem", GitHubRepoUrl = "https://github.com/An4r3w/BetterRestartingSystem" },
             new PluginInfo { Name = "AutoBroadcast", GitHubRepoUrl = "https://github.com/Misfiy/AutoBroadcast" },
             new PluginInfo { Name = "ShootingInteractions", GitHubRepoUrl = "https://github.com/SiphoxR/ShootingInteractions" },
+            new PluginInfo { Name = "UIURescueSquad", GitHubRepoUrl = "https://github.com/NikkiGardiner1/UIURescueSquad"},
         };
 
         public override void OnEnabled()
