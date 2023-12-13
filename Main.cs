@@ -7,6 +7,7 @@ using Config = PluginUpdater.Config;
 using EventsHandler = PluginUpdater.EventsHandler;
 using System.Runtime.CompilerServices;
 using Exiled.API.Enums;
+using server = Exiled.Events.Handlers.Server;
 using static System.Net.WebRequestMethods;
 using System.Collections.Generic;
 
@@ -18,9 +19,11 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 1, 2);
+        public override Version Version => new Version(1, 2, 0);
 
         public override PluginPriority Priority => PluginPriority.Higher;
+
+        private EventsHandler events;
 
         public class PluginInfo
         {
@@ -55,22 +58,50 @@ namespace AutoUpdatePlugin
         };
 
 
+
+
         public override void OnEnabled()
         {
+
             Instance = this;
             EventsHandler.CreateCustomPluginListFile();
             EventsHandler.UpdatePlugins();
+            RegisterEvents();
             base.OnEnabled();
 
 
         }
+
+
         public override void OnDisabled()
         {
             Instance = null;
+            UnRegisterEvents();
             base.OnEnabled();
 
 
         }
+
+        public void RegisterEvents()
+        {
+         
+            events = new EventsHandler();
+
+            server.WaitingForPlayers += events.SendWarn;
+
+        }
+
+        public void UnRegisterEvents()
+        {
+            
+            server.WaitingForPlayers -= events.SendWarn;
+
+            events = new EventsHandler();
+            Instance = null;
+
+        }
+
+
 
 
     }

@@ -14,11 +14,22 @@ using System.Collections.Generic;
 using YamlDotNet.Serialization;
 using System.Text;
 using MEC;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PluginUpdater
 {
         internal class EventsHandler
         {
+
+        static bool anyPluginToUpdate = false;
+
+        internal void SendWarn()
+        {
+            if (!anyPluginToUpdate)
+            {
+                Log.Warn("No plugins to update. Make sure at least one plugin is enabled for updates!");
+            }
+        }
 
         internal static void UpdatePlugins()
         {
@@ -26,6 +37,8 @@ namespace PluginUpdater
             var customPluginList = LoadCustomPluginList(Path.Combine(Exiled.API.Features.Paths.Configs, "Custom-Updater.yml"));
 
             var allPluginsToUpdate = Main.Instance.pluginsToUpdate.Concat(customPluginList);
+
+            
 
 
             foreach (var pluginInfo in allPluginsToUpdate)
@@ -42,24 +55,20 @@ namespace PluginUpdater
                             if (Main.BlacklistedPluginNames.Contains(pluginInfo.Name, StringComparer.OrdinalIgnoreCase))
                             {
                                 Log.Warn($"{pluginInfo.Name} It cannot be updated because it is blacklisted!");
-                                return;
+                                
                             }
                             else
                             {
-                               /* if (pluginInfo.Name == "PluginUpdater")
-                                {
-                                    Timing.CallDelayed(6f, () => {
-                                        Log.Warn($"Checking the plugin {pluginInfo.Name}....");
-                                        UpdatePlugin(pluginInfo);
-                                    }
-                                    );
 
-                                }
-                                else
-                                {*/
+                                if (ShouldUpdatePlugin(pluginInfo))
+                                {
                                     Log.Warn($"Checking the plugin {pluginInfo.Name}....");
                                     UpdatePlugin(pluginInfo);
-                                //}
+
+                                    anyPluginToUpdate = true;
+                                }
+
+
                             }
 
                             
@@ -109,6 +118,31 @@ namespace PluginUpdater
                 }
             }
         }
+
+        private static bool ShouldUpdatePlugin(PluginInfo pluginInfo)
+        {
+            switch (pluginInfo.Name)
+            {
+                case "DotaHeroes" when Main.Instance.Config.DotaHeroes:
+                case "DiscordIntegration" when Main.Instance.Config.DiscordIntegration:
+                case "CustomItems" when Main.Instance.Config.CustomItems:
+                case "CustomRoles" when Main.Instance.Config.CustomRoles:
+                case "SCPCosmetics" when Main.Instance.Config.SCPCosmetics:
+                case "UncomplicatedCustomRoles" when Main.Instance.Config.UncomplicatedCustomRoles:
+                case "SerpentsHand" when Main.Instance.Config.SerpentsHand:
+                case "BetterRestartingSystem" when Main.Instance.Config.BetterRestartingSystem:
+                case "ScriptedEvents" when Main.Instance.Config.UncomplicatedCustomRoles:
+                case "BetterSinkholes" when Main.Instance.Config.BetterSinkholes:
+                case "AutoBroadcast" when Main.Instance.Config.AutoBroadcast:
+                case "ShootingInteractions" when Main.Instance.Config.ShootingInteractions:
+                case "UIURescueSquad" when Main.Instance.Config.UIURescueSquad:
+                case "FacilityManagement" when Main.Instance.Config.FacilityManagement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
 
         internal static bool IsPluginInstalled(string pluginName)
         {
