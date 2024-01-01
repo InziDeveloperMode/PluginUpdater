@@ -16,21 +16,24 @@ namespace PluginUpdater
         [Description("Do you want to enable the debug mode?")]
         public bool Debug { get; set; } = false;
 
+        [Description("PluginUpdater folder path")]
+        public string FolderPath { get; set; } = $"{Exiled.API.Features.Paths.Configs}/PluginUpdater";
+
         [Description("List of official plugins to be updated automatically")]
-        public bool DotaHeroes { get; set; } = true;
-        public bool DiscordIntegration { get; set; } = true;
-        public bool CustomItems { get; set; } = true;
-        public bool CustomRoles { get; set; } = true;
-        public bool SCPCosmetics { get; set; } = true;
-        public bool UncomplicatedCustomRoles { get; set; } = true;
-        public bool FacilityManagement { get; set; } = true;
-        public bool BetterSinkholes { get; set; } = true;
-        public bool SerpentsHand { get; set; } = true;
-        public bool BetterRestartingSystem { get; set; } = true;
-        public bool AutoBroadcast { get; set; } = true;
-        public bool ShootingInteractions { get; set; } = true;
-        public bool UIURescueSquad { get; set; } = true;
-        public bool ScriptedEvents { get; set; } = true;
+        public bool DotaHeroes { get; set; } = false;
+        public bool DiscordIntegration { get; set; } = false;
+        public bool CustomItems { get; set; } = false;
+        public bool CustomRoles { get; set; } = false;
+        public bool SCPCosmetics { get; set; } = false;
+        public bool UncomplicatedCustomRoles { get; set; } = false;
+        public bool FacilityManagement { get; set; } = false;
+        public bool BetterSinkholes { get; set; } = false;
+        public bool SerpentsHand { get; set; } = false;
+        public bool BetterRestartingSystem { get; set; } = false;
+        public bool AutoBroadcast { get; set; } = false;
+        public bool ShootingInteractions { get; set; } = false;
+        public bool UIURescueSquad { get; set; } = false;
+        public bool ScriptedEvents { get; set; } = false;
 
 
 

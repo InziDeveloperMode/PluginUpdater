@@ -15,6 +15,7 @@ using YamlDotNet.Serialization;
 using System.Text;
 using MEC;
 using System.Diagnostics.CodeAnalysis;
+using UnityEngine.Assertions.Must;
 
 namespace PluginUpdater
 {
@@ -25,7 +26,15 @@ namespace PluginUpdater
 
         internal void SendWarn()
         {
-            if (!anyPluginToUpdate)
+            string settingsContent = File.ReadAllText(Path.Combine(Main.Instance.Config.FolderPath, "settings.txt"));
+
+            if (settingsContent.Contains("allow=false") && Main.warningsent == false)
+            {
+                Log.Warn($"Hey, thank you for installing PluginUpdater!\nTo enable automatic plugin updating, type \"allow\" or go to {Main.Instance.Config.FolderPath}/settings.txt and where you see \"allow\" enter true instead of false");
+                Main.warningsent = true;
+
+            }
+            if (!anyPluginToUpdate && settingsContent.Contains("allow=true"))
             {
                 Log.Warn("No plugins to update. Make sure at least one plugin is enabled for updates!");
             }
@@ -33,13 +42,10 @@ namespace PluginUpdater
 
         internal static void UpdatePlugins()
         {
-
-            var customPluginList = LoadCustomPluginList(Path.Combine(Exiled.API.Features.Paths.Configs, "Custom-Updater.yml"));
-
+            var customPluginList = LoadCustomPluginList(Path.Combine(Main.Instance.Config.FolderPath, "Custom-Updater.yml"));
             var allPluginsToUpdate = Main.Instance.pluginsToUpdate.Concat(customPluginList);
 
-            
-
+            string permissionContent = File.ReadAllText(Path.Combine(Main.Instance.Config.FolderPath, "settings.txt"));
 
             foreach (var pluginInfo in allPluginsToUpdate)
             {
@@ -51,32 +57,27 @@ namespace PluginUpdater
                         // Check if the update is available
                         if (IsUpdateAvailable(pluginInfo))
                         {
-
-                            if (Main.BlacklistedPluginNames.Contains(pluginInfo.Name, StringComparer.OrdinalIgnoreCase))
+                            if (permissionContent.Contains("allow=true"))
                             {
-                                Log.Warn($"{pluginInfo.Name} It cannot be updated because it is blacklisted!");
-                                
-                            }
-                            else
-                            {
-
-                                if (ShouldUpdatePlugin(pluginInfo))
+                                if (Main.BlacklistedPluginNames.Contains(pluginInfo.Name, StringComparer.OrdinalIgnoreCase))
                                 {
-                                    Log.Warn($"Checking the plugin {pluginInfo.Name}....");
-                                    UpdatePlugin(pluginInfo);
-
-                                    anyPluginToUpdate = true;
+                                    Log.Warn($"{pluginInfo.Name} cannot be updated because it is blacklisted!");
                                 }
+                                else
+                                {
+                                    if (ShouldUpdatePlugin(pluginInfo))
+                                    {
+                                        Log.Warn($"Checking the plugin {pluginInfo.Name}....");
+                                        UpdatePlugin(pluginInfo);
+                                        anyPluginToUpdate = true;
 
-
+                                        if (customPluginList.Any(p => p.Name.Equals(pluginInfo.Name, StringComparison.OrdinalIgnoreCase)))
+                                        {
+                                            Log.Warn($"Plugin {pluginInfo.Name} from custom list updated!");
+                                        }
+                                    }
+                                }
                             }
-
-                            
-                            
-                            
-                          
-                            
-                            
                         }
                         else
                         {
@@ -87,28 +88,24 @@ namespace PluginUpdater
                     {
                         Log.Error($"Error updating plugin: {ex.Message}");
 
-                        // If the exception is a WebException, handle it specifically
-                        if (ex is WebException webEx)
+                        if (ex is WebException webEx && webEx.Response is HttpWebResponse response)
                         {
-                            if (webEx.Response is HttpWebResponse response)
+                            if (response.StatusCode == HttpStatusCode.NotFound)
                             {
-                                if (response.StatusCode == HttpStatusCode.NotFound)
-                                {
-                                    Log.Error("Error 404: Unable to find update. Make sure the URL is correct.");
-                                }
-                                else
-                                {
-                                    Log.Error($"HTTP Error: {response.StatusCode}");
-                                }
-                            }
-                            else if (webEx.Status == WebExceptionStatus.NameResolutionFailure)
-                            {
-                                Log.Error("Name resolution error: Make sure your server has a working network connection.");
+                                Log.Error("Error 404: Unable to find update. Make sure the URL is correct.");
                             }
                             else
                             {
-                                Log.Error($"Unknown error during HTTP request: {webEx.Message}");
+                                Log.Error($"HTTP Error: {response.StatusCode}");
                             }
+                        }
+                        else if (ex is WebException WebEx && WebEx.Status == WebExceptionStatus.NameResolutionFailure)
+                        {
+                            Log.Error("Name resolution error: Make sure your server has a working network connection.");
+                        }
+                        else
+                        {
+                            Log.Error($"Unknown error during HTTP request: {ex.Message}");
                         }
                     }
                 }
@@ -119,8 +116,11 @@ namespace PluginUpdater
             }
         }
 
+
         private static bool ShouldUpdatePlugin(PluginInfo pluginInfo)
         {
+            var customPluginList = LoadCustomPluginList(Path.Combine(Main.Instance.Config.FolderPath, "Custom-Updater.yml"));
+
             switch (pluginInfo.Name)
             {
                 case "DotaHeroes" when Main.Instance.Config.DotaHeroes:
@@ -131,7 +131,7 @@ namespace PluginUpdater
                 case "UncomplicatedCustomRoles" when Main.Instance.Config.UncomplicatedCustomRoles:
                 case "SerpentsHand" when Main.Instance.Config.SerpentsHand:
                 case "BetterRestartingSystem" when Main.Instance.Config.BetterRestartingSystem:
-                case "ScriptedEvents" when Main.Instance.Config.UncomplicatedCustomRoles:
+                case "ScriptedEvents" when Main.Instance.Config.ScriptedEvents:
                 case "BetterSinkholes" when Main.Instance.Config.BetterSinkholes:
                 case "AutoBroadcast" when Main.Instance.Config.AutoBroadcast:
                 case "ShootingInteractions" when Main.Instance.Config.ShootingInteractions:
@@ -139,7 +139,10 @@ namespace PluginUpdater
                 case "FacilityManagement" when Main.Instance.Config.FacilityManagement:
                     return true;
                 default:
-                    return false;
+                    if (customPluginList.Any(p => p.Name.Equals(pluginInfo.Name, StringComparison.OrdinalIgnoreCase)))
+                        return true;
+                    else
+                        return false;
             }
         }
 
@@ -158,13 +161,12 @@ namespace PluginUpdater
             return true;
         }
 
-        
+
 
 
 
         internal static void UpdatePlugin(PluginInfo pluginInfo)
         {
-
 
             // Get the URL of the DLL file from the GitHub repository
             string dllUrl = $"{pluginInfo.GitHubRepoUrl}/releases/latest/download/{pluginInfo.Name}.dll";
@@ -177,9 +179,11 @@ namespace PluginUpdater
             catch (WebException ex)
             {
                 Log.Error($"Error downloading file: {ex.Message}");
-              
+
             }
-        }
+        
+         }
+
 
 
         internal static void DownloadFile(string fileUrl, string savePath)
@@ -190,33 +194,44 @@ namespace PluginUpdater
             }
         }
 
-        internal static void CreateCustomPluginListFile()
+        internal static void CreatePLuginUpdaterFiles()
         {
             try
             {
-                // Check if the file already exists
-                if (!File.Exists(Path.Combine(Exiled.API.Features.Paths.Configs, "Custom-Updater.yml")))
+
+                if (!Directory.Exists(Main.Instance.Config.FolderPath))
                 {
-                    // Create a custom plugin list example
+                    Directory.CreateDirectory(Main.Instance.Config.FolderPath);
+                }
+
+                if (!File.Exists(Path.Combine(Main.Instance.Config.FolderPath, "Custom-Updater.yml")))
+                {
+            
                     var customPluginList = new List<PluginInfo>
                 {
                     new PluginInfo { Name = "CustomPlugin1", GitHubRepoUrl = "https://github.com/user/repo1" },
                     new PluginInfo { Name = "CustomPlugin2", GitHubRepoUrl = "https://github.com/user/repo2" },
                     
                 };
-
-                    // Serialize the list of plugins
+               
                     var serializer = new Serializer();
                     var yamlContent = serializer.Serialize(customPluginList);
 
-                    // Write the YAML content to the file
-                    File.WriteAllText(Path.Combine(Exiled.API.Features.Paths.Configs, "Custom-Updater.yml"), yamlContent, Encoding.UTF8);
+                    File.WriteAllText(Path.Combine(Main.Instance.Config.FolderPath, "Custom-Updater.yml"), yamlContent, Encoding.UTF8);
 
-                    Log.Warn($"I am creating Custom-Updater.yml file in the config folder....");
+                    Log.Warn($"I am creating Custom-Updater.yml file in the PluginUpdater folder....");
+                    
                 }
                 else
                 {
                     Log.Debug($"Custom-Updater.yml file already exists in the config folder.");
+                }
+
+                if(!File.Exists(Path.Combine(Main.Instance.Config.FolderPath, "settings.txt")))
+                {
+                 
+                    File.WriteAllText(Path.Combine(Main.Instance.Config.FolderPath, "settings.txt"), "allow=false", Encoding.Default);
+                    Log.Warn($"I am creating settings.txt file in the PluginUpdater folder....");
                 }
             }
             catch (Exception ex)
@@ -231,6 +246,14 @@ namespace PluginUpdater
         {
             try
             {
+               
+                if (!File.Exists(filePath))
+                {
+                    Log.Warn($"File {filePath} not found. Creating an empty list.");
+                    return Array.Empty<PluginInfo>();
+                }
+
+
                 using (var reader = new StreamReader(filePath))
                 {
                     var deserializer = new Deserializer();
@@ -240,11 +263,12 @@ namespace PluginUpdater
             }
             catch (Exception ex)
             {
-               
                 Log.Error($"Error loading YAML file: {ex.Message}");
                 return Array.Empty<PluginInfo>();
             }
         }
+
+
 
 
 

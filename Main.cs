@@ -19,9 +19,11 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 2, 0);
+        public override Version Version => new Version(1, 3, 0);
 
         public override PluginPriority Priority => PluginPriority.Higher;
+
+        internal static bool warningsent = false;
 
         private EventsHandler events;
 
@@ -64,7 +66,7 @@ namespace AutoUpdatePlugin
         {
 
             Instance = this;
-            EventsHandler.CreateCustomPluginListFile();
+            EventsHandler.CreatePLuginUpdaterFiles();
             EventsHandler.UpdatePlugins();
             RegisterEvents();
             base.OnEnabled();
