@@ -28,11 +28,11 @@ namespace PluginUpdater
         public bool UncomplicatedCustomRoles { get; set; } = false;
         public bool FacilityManagement { get; set; } = false;
         public bool BetterSinkholes { get; set; } = false;
-        public bool SerpentsHand { get; set; } = false;
+        public bool MapEditorReborn { get; set; } = false;
         public bool BetterRestartingSystem { get; set; } = false;
         public bool AutoBroadcast { get; set; } = false;
         public bool ShootingInteractions { get; set; } = false;
-        public bool UIURescueSquad { get; set; } = false;
+        public bool RoundReports { get; set; } = false;
         public bool ScriptedEvents { get; set; } = false;
 
 

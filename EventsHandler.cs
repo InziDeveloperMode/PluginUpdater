@@ -30,7 +30,7 @@ namespace PluginUpdater
 
             if (settingsContent.Contains("allow=false") && Main.warningsent == false)
             {
-                Log.Warn($"Hey, thank you for installing PluginUpdater!\nTo enable automatic plugin updating, type \"allow\" or go to {Main.Instance.Config.FolderPath}/settings.txt and where you see \"allow\" enter true instead of false");
+                Log.Warn($"Hey, thank you for installing PluginUpdater!\nTo enable automatic and manual plugin updating, type \"allow\" or go to {Main.Instance.Config.FolderPath}/settings.txt and where you see \"allow\" enter true instead of false\nDon't worry, even if you send \"allow\", the plugins must be enabled in the plugin settings to be installed automatically, they will NOT be installed unless you enable them.");
                 Main.warningsent = true;
 
             }
@@ -42,10 +42,16 @@ namespace PluginUpdater
 
         internal static void UpdatePlugins()
         {
+
+
+            string permissionContent = File.ReadAllText(Path.Combine(Main.Instance.Config.FolderPath, "settings.txt"));
+
+            if (permissionContent.Contains("allow=false")) return;
+
             var customPluginList = LoadCustomPluginList(Path.Combine(Main.Instance.Config.FolderPath, "Custom-Updater.yml"));
             var allPluginsToUpdate = Main.Instance.pluginsToUpdate.Concat(customPluginList);
 
-            string permissionContent = File.ReadAllText(Path.Combine(Main.Instance.Config.FolderPath, "settings.txt"));
+;
 
             foreach (var pluginInfo in allPluginsToUpdate)
             {
@@ -129,13 +135,13 @@ namespace PluginUpdater
                 case "CustomRoles" when Main.Instance.Config.CustomRoles:
                 case "SCPCosmetics" when Main.Instance.Config.SCPCosmetics:
                 case "UncomplicatedCustomRoles" when Main.Instance.Config.UncomplicatedCustomRoles:
-                case "SerpentsHand" when Main.Instance.Config.SerpentsHand:
+                case "MapEditorReborn" when Main.Instance.Config.MapEditorReborn:
                 case "BetterRestartingSystem" when Main.Instance.Config.BetterRestartingSystem:
                 case "ScriptedEvents" when Main.Instance.Config.ScriptedEvents:
                 case "BetterSinkholes" when Main.Instance.Config.BetterSinkholes:
                 case "AutoBroadcast" when Main.Instance.Config.AutoBroadcast:
                 case "ShootingInteractions" when Main.Instance.Config.ShootingInteractions:
-                case "UIURescueSquad" when Main.Instance.Config.UIURescueSquad:
+                case "RoundReports" when Main.Instance.Config.RoundReports:
                 case "FacilityManagement" when Main.Instance.Config.FacilityManagement:
                     return true;
                 default:

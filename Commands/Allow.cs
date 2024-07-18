@@ -19,6 +19,9 @@ namespace PluginUpdater.Commands
 
         public string Description => "Update all plugins in the list of plugins to update";
 
+        public bool SanitizeResponse => true;
+
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
 

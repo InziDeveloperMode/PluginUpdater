@@ -18,8 +18,8 @@ namespace AutoUpdatePlugin
         public static Main Instance;
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
-        public override Version RequiredExiledVersion => new(8, 4, 3);
-        public override Version Version => new Version(1, 3, 0);
+        public override Version RequiredExiledVersion => new(8, 9, 7);
+        public override Version Version => new Version(2, 0, 0);
 
         public override PluginPriority Priority => PluginPriority.Higher;
 
@@ -45,11 +45,11 @@ namespace AutoUpdatePlugin
             new PluginInfo { Name = "FacilityManagement", GitHubRepoUrl = "https://github.com/louis1706/FacilityManagement" },
             new PluginInfo { Name = "UncomplicatedCustomRoles", GitHubRepoUrl = "https://github.com/FoxWorn3365/UncomplicatedCustomRoles" },
             new PluginInfo { Name = "BetterSinkholes", GitHubRepoUrl = "https://github.com/Gamers-Workshop/BetterSinkholes" },
-            new PluginInfo { Name = "SerpentsHand", GitHubRepoUrl = "https://github.com/NikkiGardiner1/SerpentsHand" },
+            new PluginInfo { Name = "MapEditorReborn", GitHubRepoUrl = "https://github.com/Michal78900/MapEditorReborn" },
             new PluginInfo { Name = "BetterRestartingSystem", GitHubRepoUrl = "https://github.com/An4r3w/BetterRestartingSystem" },
             new PluginInfo { Name = "AutoBroadcast", GitHubRepoUrl = "https://github.com/Misfiy/AutoBroadcast" },
             new PluginInfo { Name = "ShootingInteractions", GitHubRepoUrl = "https://github.com/SiphoxR/ShootingInteractions" },
-            new PluginInfo { Name = "UIURescueSquad", GitHubRepoUrl = "https://github.com/NikkiGardiner1/UIURescueSquad"},
+            new PluginInfo { Name = "RoundReports", GitHubRepoUrl = "https://github.com/Thundermaker300/RoundReports"},
             new PluginInfo { Name = "ScriptedEvents", GitHubRepoUrl = "https://github.com/Thundermaker300/ScriptedEvents"},
             
         };
