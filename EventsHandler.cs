@@ -143,6 +143,8 @@ namespace PluginUpdater
                 case "ShootingInteractions" when Main.Instance.Config.ShootingInteractions:
                 case "RoundReports" when Main.Instance.Config.RoundReports:
                 case "FacilityManagement" when Main.Instance.Config.FacilityManagement:
+                case "SerpentsHand" when Main.Instance.Config.SerpentsHand:
+                case "UIURescueSquad" when Main.Instance.Config.UIURescueSquad:
                     return true;
                 default:
                     if (customPluginList.Any(p => p.Name.Equals(pluginInfo.Name, StringComparison.OrdinalIgnoreCase)))

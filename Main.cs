@@ -19,7 +19,7 @@ namespace AutoUpdatePlugin
         public override string Name => "PluginUpdater";
         public override string Author => "semplicementeinzi";
         public override Version RequiredExiledVersion => new(8, 9, 7);
-        public override Version Version => new Version(2, 0, 0);
+        public override Version Version => new Version(2, 0, 1);
 
         public override PluginPriority Priority => PluginPriority.Higher;
 
@@ -51,6 +51,8 @@ namespace AutoUpdatePlugin
             new PluginInfo { Name = "ShootingInteractions", GitHubRepoUrl = "https://github.com/SiphoxR/ShootingInteractions" },
             new PluginInfo { Name = "RoundReports", GitHubRepoUrl = "https://github.com/Thundermaker300/RoundReports"},
             new PluginInfo { Name = "ScriptedEvents", GitHubRepoUrl = "https://github.com/Thundermaker300/ScriptedEvents"},
+            new PluginInfo { Name = "SerpentsHand", GitHubRepoUrl = "https://github.com/SnivyFilms/SerpentsHand"},
+            new PluginInfo { Name = "UIURescueSquad", GitHubRepoUrl = "https://github.com/SnivyFilms/UIURescueSquad"},
             
         };
 

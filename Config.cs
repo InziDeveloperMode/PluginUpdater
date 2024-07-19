@@ -34,6 +34,8 @@ namespace PluginUpdater
         public bool ShootingInteractions { get; set; } = false;
         public bool RoundReports { get; set; } = false;
         public bool ScriptedEvents { get; set; } = false;
+        public bool SerpentsHand { get; set; } = false;
+        public bool UIURescueSquad { get; set; } = false;
 
 
 
